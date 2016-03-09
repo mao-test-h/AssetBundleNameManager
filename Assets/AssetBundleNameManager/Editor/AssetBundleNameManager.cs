@@ -13,7 +13,7 @@ public class AssetBundleNameManager : EditorWindow
     static AssetBundleNameManager instance = null;
 
 
-    [MenuItem("Assets/Asset Bundle Name Manager")]
+    [MenuItem("Window/Asset Bundle Name Manager")]
     static void Open()
     {
         if (ImporterList == null)
@@ -115,7 +115,7 @@ public class AssetBundleNameManager : EditorWindow
                 this.ChangeAssetBundleName(field, preField);
                 return;
             }
-            if (GUILayout.Button("Delete"))
+            if (GUILayout.Button("Remove"))
             {
                 // 空文字を渡して設定を消す
                 this.ChangeAssetBundleName(string.Empty, preField);
@@ -144,7 +144,7 @@ public class AssetBundleNameManager : EditorWindow
                 this.ChangeVariant(field, preField);
                 return;
             }
-            if (GUILayout.Button("Delete"))
+            if (GUILayout.Button("Remove"))
             {
                 // 空文字を渡して設定を消す
                 this.ChangeVariant(string.Empty, preField);
