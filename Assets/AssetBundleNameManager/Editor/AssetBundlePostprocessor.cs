@@ -1,35 +1,38 @@
 ﻿using UnityEditor;
 
-public class AssetBundlePostprocessor : AssetPostprocessor
+namespace AssetBundles.Utility
 {
-    /// <summary>AssetBundleの設定変更検知</summary>
-    /// <param name="assetPath">変更されたAssetのPath</param>
-    /// <param name="previousAssetBundleName">変更前のAssetBundle名</param>
-    /// <param name="newAssetBundleName">変更後のAssetBundle名</param>
-    public void OnPostprocessAssetbundleNameChanged(
-        string assetPath,
-        string previousAssetBundleName,
-        string newAssetBundleName)
+    public class AssetBundlePostprocessor : AssetPostprocessor
     {
-        var importerList = AssetBundleNameManager.ImporterList;
-        if (importerList == null) { return; }
-        var asset = importerList.Find(_ => _.assetPath == assetPath);
-        var importer = AssetImporter.GetAtPath(assetPath);
-        if (asset == null)
+        /// <summary>AssetBundleの設定変更検知</summary>
+        /// <param name="assetPath">変更されたAssetのPath</param>
+        /// <param name="previousAssetBundleName">変更前のAssetBundle名</param>
+        /// <param name="newAssetBundleName">変更後のAssetBundle名</param>
+        public void OnPostprocessAssetbundleNameChanged(
+            string assetPath,
+            string previousAssetBundleName,
+            string newAssetBundleName)
         {
-            importerList.Add(importer);
-        }
-        else
-        {
-            if (!string.IsNullOrEmpty(importer.assetBundleName))
+            var importerList = AssetBundleNameManager.ImporterList;
+            if (importerList == null) { return; }
+            var asset = importerList.Find(_ => _.assetPath == assetPath);
+            var importer = AssetImporter.GetAtPath(assetPath);
+            if (asset == null)
             {
-                asset = importer;
+                importerList.Add(importer);
             }
             else
             {
-                importerList.Remove(asset);
+                if (!string.IsNullOrEmpty(importer.assetBundleName))
+                {
+                    asset = importer;
+                }
+                else
+                {
+                    importerList.Remove(asset);
+                }
             }
+            AssetBundleNameManager.GUIUpdate();
         }
-        AssetBundleNameManager.GUIUpdate();
     }
 }
